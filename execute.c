@@ -9,7 +9,7 @@
  */
 void execute_command(char **args) 
 {
-    pid_t pid, wpid;
+    pid_t pid;
     int status;
 
     pid = fork();
@@ -28,10 +28,6 @@ void execute_command(char **args)
         perror("hsh");
     } else 
     {
-        /* Parent process */
-        do 
-        {
-            wpid = waitpid(pid, &status, WUNTRACED);
-        } while (!WIFEXITED(status) && !WIFSIGNALED(status));
+      waitpid(pid, &status, 0);
     }
 }
