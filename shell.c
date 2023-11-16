@@ -9,37 +9,25 @@
  */
 void run_shell() {
     char input[MAX_INPUT_SIZE];
-    char *args[MAX_ARGS];
-    int should_run = 1;
 
-
-    while (should_run) {
-                char *token;
-        int i = 0;
-        printf("($) ");
+    while (1) {
         fflush(stdout);
 
         if (fgets(input, sizeof(input), stdin) == NULL) {
-            break; /* Exit on EOF */
+            break;
         }
 
-        /* Remove newline character */
         input[strcspn(input, "\n")] = '\0';
 
-        token = strtok(input, " ");
-        while (token != NULL && i < MAX_ARGS - 1) {
-            args[i] = token;
-            i++;
-            token = strtok(NULL, " ");
-        }
+        if (strlen(input) > 0) {
+            char *start = strchr(input, '(');
+            char *end = strchr(input, ')');
 
-        args[i] = NULL; /* Null-terminate the argument list */
-
-        if (i > 0) {
-            if (strcmp(args[0], "exit") == 0) {
-                should_run = 0; /* Exit the shell */
+            if (start != NULL && end != NULL && end > start) {
+                *end = '\0';
+                execute_command(start + 1);
             } else {
-                execute_command(args);
+                execute_command(input);
             }
         }
     }

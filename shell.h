@@ -9,9 +9,10 @@
 #include <sys/wait.h>
 
 #define MAX_INPUT_SIZE 1024
-#define MAX_ARGS 64
+#define MAX_ARGS 32
 
-void execute_command(char **args);
+void tokenize_input(char *input, char *args[]);
+void execute_command(char *command);
 void run_shell();
 
 #endif /* SHELL_H */
