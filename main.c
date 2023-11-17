@@ -6,8 +6,10 @@
  * This function initializes a simple shell that takes user input, tokenizes
  * it into arguments, and executes commands. It continues to run until the user
  * enters the "exit" command.
+ * return 0 - Return 0 on success
  */
-void run_shell() {
+int main(void) 
+{
     char input[MAX_INPUT_SIZE];
 
     while (1) {
@@ -31,4 +33,5 @@ void run_shell() {
             }
         }
     }
+    return 0;
 }
