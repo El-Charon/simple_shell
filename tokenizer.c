@@ -12,14 +12,15 @@
  * The tokenization process is limited to 'MAX_ARGS - 1' tokens, and the last
  * element of the 'args' array is set to NULL for compatibility with exec functions.
  */
-void tokenize_input(char *input, char *args[]) {
+void tokenize_input(char *input, char *args[])
+{
     const char *delimiters = " \t\n";
     char *token;
     int i = 0;
 
-    while ((token = strtok(input, delimiters)) != NULL && i < MAX_ARGS - 1) {
+    while ((token = strtok(input, delimiters)) != NULL && i < MAX_ARGS - 1)
+    {
         args[i++] = token;
-
         input = NULL;
     }
 
