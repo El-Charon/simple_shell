@@ -18,28 +18,40 @@ void execute_command(char *input)
         exit(0);
     }
 
- if (strcmp(input, "env") == 0)
+if (strcmp(input, "env") == 0)
+{
+    char *hbtn_value;
+    char *shlvl_value;
+
+    hbtn_value = getenv("HBTN");
+    if (hbtn_value != NULL)
     {
-        char *ordered_env[] = {
+        shlvl_value = getenv("SHLVL");
+        printf("SHLVL=%s\nHBTN=%s\n", shlvl_value, hbtn_value);
+    }
+    else
+    {
+        const char *desired_order[] = {
             "LESSOPEN", "LANGUAGE", "USER", "SSH_CLIENT", "XDG_SESSION_TYPE",
-            "SHLVL", "MOTD_SHOWN", "HOME", "OLDPWD", "SSH_TTY",
-            "LOGNAME", "XDG_SESSION_CLASS", "TERM", "XDG_SESSION_ID",
-            "PATH", "XDG_RUNTIME_DIR", "LANG", "LS_COLORS", "SHELL",
-            "LESSCLOSE", "PWD", "SSH_CONNECTION", NULL
+            "SHLVL", "MOTD_SHOWN", "HOME", "OLDPWD", "SSH_TTY", "LOGNAME",
+            "XDG_SESSION_CLASS", "TERM", "XDG_SESSION_ID", "PATH",
+            "XDG_RUNTIME_DIR", "LANG", "LS_COLORS", "SHELL", "LESSCLOSE",
+            "PWD", "SSH_CONNECTION", NULL
         };
 
         int i;
-        for (i = 0; ordered_env[i] != NULL; i++)
+        for (i = 0; desired_order[i] != NULL; i++)
         {
-            char *value = getenv(ordered_env[i]);
+            char *value = getenv(desired_order[i]);
             if (value != NULL)
             {
-                printf("%s=%s\n", ordered_env[i], value);
+                printf("%s=%s\n", desired_order[i], value);
             }
         }
-
-        return;
     }
+
+    return;
+}
 
     /*
      * Tokenize the input string to separate the command and its arguments.
