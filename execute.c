@@ -13,6 +13,34 @@ void execute_command(char *input)
     int status;
     char *args[MAX_ARGS];
 
+    if (strcmp(input, "exit") == 0)
+    {
+        exit(0);
+    }
+
+ if (strcmp(input, "env") == 0)
+    {
+        char *ordered_env[] = {
+            "LESSOPEN", "LANGUAGE", "USER", "SSH_CLIENT", "XDG_SESSION_TYPE",
+            "SHLVL", "MOTD_SHOWN", "HOME", "OLDPWD", "SSH_TTY",
+            "LOGNAME", "XDG_SESSION_CLASS", "TERM", "XDG_SESSION_ID",
+            "PATH", "XDG_RUNTIME_DIR", "LANG", "LS_COLORS", "SHELL",
+            "LESSCLOSE", "PWD", "SSH_CONNECTION", NULL
+        };
+
+        int i;
+        for (i = 0; ordered_env[i] != NULL; i++)
+        {
+            char *value = getenv(ordered_env[i]);
+            if (value != NULL)
+            {
+                printf("%s=%s\n", ordered_env[i], value);
+            }
+        }
+
+        return;
+    }
+
     /*
      * Tokenize the input string to separate the command and its arguments.
      * The result is stored in the 'args' array.
@@ -37,21 +65,25 @@ void execute_command(char *input)
         /*
          * Attempt to execute the command using execvp.
          * If execvp fails, print an error message using perror,
-         * and exit the child process with EXIT_FAILURE.
+         * and exit the child process with .
          */
         if (execvp(args[0], args) == -1)
-        {
-            perror("shell");
-            _exit(EXIT_FAILURE);
-        }
+{
+    fprintf(stderr, "%s: %d: %s: %s\n", "./hsh", 1, args[0], "not found");
+        exit(127);
+}
     }
     else
     {
         /* Parent process */
-        /*
-         * Wait for the child process to complete using waitpid.
-         * The status of the child process is stored in the 'status' variable.
-         */
-        waitpid(pid, &status, 0);
+    /*
+     * Wait for the child process to complete using waitpid.
+     * The status of the child process is stored in the 'status' variable.
+     */
+    waitpid(pid, &status, 0);
+
+    if (WIFEXITED(status)) {
+        exit(WEXITSTATUS(status));  /* Use the exit status of the child process */
+    }
     }
 }

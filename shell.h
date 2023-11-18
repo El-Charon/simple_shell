@@ -7,6 +7,8 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <ctype.h>
+extern char **environ;
 
 #define MAX_INPUT_SIZE 1024
 #define MAX_ARGS 32
